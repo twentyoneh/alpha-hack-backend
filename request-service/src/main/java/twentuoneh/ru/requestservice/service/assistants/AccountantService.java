@@ -1,8 +1,10 @@
 package twentuoneh.ru.requestservice.service.assistants;
 
 import org.springframework.stereotype.Service;
+import twentuoneh.ru.requestservice.dto.ChatMessage;
 import twentuoneh.ru.requestservice.dto.MessageRequest;
 import twentuoneh.ru.requestservice.dto.MessageResponse;
+import twentuoneh.ru.requestservice.enums.Assistant;
 import twentuoneh.ru.requestservice.service.llm.LlmClient;
 
 @Service("ACCOUNTANT")
@@ -15,14 +17,10 @@ public class AccountantService implements AssistantService {
 
     @Override
     public MessageResponse handle(MessageRequest request) {
-        String prompt = buildPrompt(request);
-        String result = llm.generate(prompt);
+        var assistant = request.getAssistant().assistantName();
+//        var chatMessage = new ChatMessage(Assistant.CONSULTANT.assistantName(), );
+        //TODO: Переписать
+        String result = llm.generate(assistant, , request.getMessage());
         return new MessageResponse(result);
-    }
-
-    //TODO: доработать формирование запроса
-    private String buildPrompt(MessageRequest req) {
-        // формируем запрос под бухгалтера
-        return "Accountant: " + req.getMessage();
     }
 }

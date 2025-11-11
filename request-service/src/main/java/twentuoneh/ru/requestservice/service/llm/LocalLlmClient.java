@@ -3,6 +3,8 @@ package twentuoneh.ru.requestservice.service.llm;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import twentuoneh.ru.requestservice.dto.ChatMessage;
+import twentuoneh.ru.requestservice.enums.Assistant;
 
 import java.util.List;
 import java.util.Map;
@@ -10,10 +12,8 @@ import java.util.Map;
 @Service
 public class LocalLlmClient implements LlmClient {
 
-    // Если поднимали через: `run llama-3.2-1b-instruct:q4_k_m`
-    // то имя модели в API, как правило, "llama-3.2-1b-instruct".
-    // Если клали файл .gguf руками — укажите точное имя файла без расширения.
     private static final String MODEL = "llama-3.2-1b-instruct:q4_k_m";
+    private static final int MAX_MESSAGES = 20;
 
     private final WebClient webClient;
 
@@ -21,15 +21,15 @@ public class LocalLlmClient implements LlmClient {
         this.webClient = webClient;
     }
 
+    //TODO: Переписать
     @Override
-    public String generate(String prompt) {
+    public String generate(Assistant assistant, List<ChatMessage> history, String userMessage) {
         Map<String, Object> body = Map.of(
                 "model", MODEL,
                 "messages", List.of(
                         Map.of("role", "user", "content", prompt)
                 ),
                 "stream", false,
-                // При желании — тюнинги:
                 "temperature", 0.7
                 // "max_tokens", 512
         );
