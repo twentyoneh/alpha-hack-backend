@@ -1,82 +1,55 @@
-# Backend Business Logic
+# Backend Business Logic - Java/Spring Boot
 
-Backend system for chat assistant session management, message history storage, and basic analytics.
+Backend system for chat assistant session management.
+
+## Tech Stack
+
+- Java 17
+- Spring Boot 3.2.0
+- Spring Security + JWT
+- Spring Data JPA
+- PostgreSQL
+- Maven
+
+## Features
+
+- User authentication (register/login) with JWT
+- Session management (create, list, delete)
+- Message history with pagination
+- Security (CORS, rate limiting, input validation)
+- Health check endpoint
 
 ## Setup
 
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Configure environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-3. Generate Prisma client:
-```bash
-npm run prisma:generate
-```
-
-4. Run database migrations:
-```bash
-npm run prisma:migrate
-```
-
-5. (Optional) Seed demo data:
-```bash
-npm run seed
-```
-
-## Development
-
-Start the development server:
-```bash
-npm run dev
-```
-
-## Build
-
-Build for production:
-```bash
-npm run build
-npm start
-```
-
-## Project Structure
-
-```
-src/
-├── controllers/    # HTTP request handlers
-├── services/       # Business logic layer
-├── repositories/   # Data access layer
-├── models/         # Data models and types
-├── middleware/     # Express middleware
-└── utils/          # Utility functions and configuration
-```
+1. Install Java 17+
+2. Install PostgreSQL
+3. Copy `.env.example` to `.env` and configure
+4. Run database migrations (use schema.sql)
+5. Build: `mvn clean install`
+6. Run: `mvn spring-boot:run`
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
+### Auth
+- POST `/api/auth/register` - Register user
+- POST `/api/auth/login` - Login user
 
 ### Sessions
-- `POST /api/session` - Create new session
-- `GET /api/sessions` - List user sessions
-- `DELETE /api/session/{id}` - Delete session
+- POST `/api/session` - Create session
+- GET `/api/sessions?page=0&limit=20` - List sessions
+- DELETE `/api/session/{id}` - Delete session
 
 ### Messages
-- `GET /api/history/{session_id}` - Get message history
-- `POST /api/message` - Create new message
+- POST `/api/message` - Create message
+- GET `/api/history/{session_id}?page=0&limit=50` - Get message history
 
-## Technology Stack
+### Health
+- GET `/health` - Health check
 
-- **Runtime**: Node.js with TypeScript
-- **Framework**: Express.js
-- **Database**: PostgreSQL / SQLite
-- **ORM**: Prisma
-- **Authentication**: JWT tokens
-- **Validation**: Zod
+## Database Schema
+
+See `schema.sql` for the database structure.
+
+## Environment Variables
+
+See `.env.example` for all configuration options.

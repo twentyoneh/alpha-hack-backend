@@ -1,24 +1,30 @@
-# Dependencies
-node_modules/
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# Build output
-dist/
+.mvn/
+mvnw
+mvnw.cmd
 
-# Environment variables
-.env
-
-# Database
-*.db
-*.db-journal
-
-# Logs
-logs/
+*.class
 *.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-# IDE
-.vscode/
+.env
+application-local.properties
+
 .idea/
+*.iws
+*.iml
+*.ipr
 
-# OS
+.vscode/
+
 .DS_Store
-Thumbs.db
