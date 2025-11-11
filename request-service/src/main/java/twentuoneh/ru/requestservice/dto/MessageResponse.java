@@ -1,4 +1,4 @@
-package twentuoneh.ru.requestservice.entity;
+package twentuoneh.ru.requestservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MessageResponse {
     String response;
-
 }
