@@ -22,7 +22,6 @@ public class LocalLlmClient implements LlmClient {
         this.webClient = webClient;
     }
 
-    //TODO: Переписать
     @Override
     public String generate(Assistant assistant, List<ChatMessage> history, String userMessage) {
         Map<String, Object> body = Map.of(
