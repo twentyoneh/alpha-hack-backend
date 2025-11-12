@@ -1,13 +1,16 @@
 package twentuoneh.ru.requestservice.service.assistants;
 
-import entity.Message;
-import entity.Session;
-import entity.User;
+import twentuoneh.ru.requestservice.entity.Message;
+import twentuoneh.ru.requestservice.entity.Session;
+import twentuoneh.ru.requestservice.entity.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import twentuoneh.ru.requestservice.dto.ChatMessage;
 import twentuoneh.ru.requestservice.dto.MessageRequest;
 import twentuoneh.ru.requestservice.dto.MessageResponse;
+import twentuoneh.ru.requestservice.repository.MessageRepository;
+import twentuoneh.ru.requestservice.repository.SessionRepository;
+import twentuoneh.ru.requestservice.repository.UserRepository;
 import twentuoneh.ru.requestservice.service.llm.LlmClient;
 
 import java.time.LocalDateTime;
@@ -22,8 +25,11 @@ public class DefaultAssistantService implements AssistantService {
     private final SessionRepository sessionRepository;
     private final MessageRepository messageRepository;
 
-    public DefaultAssistantService(LlmClient llm) {
+    public DefaultAssistantService(LlmClient llm, UserRepository userRepository, SessionRepository sessionRepository, MessageRepository messageRepository) {
         this.llm = llm;
+        this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Override
@@ -44,9 +50,10 @@ public class DefaultAssistantService implements AssistantService {
     private User findOrCreateUser(MessageRequest request) {
         if (request.getUserId() != null) {
             return userRepository.findById(request.getUserId())
-                    .orElseGet(() -> return createUser(request));
+                    .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
+        return createUser(request);
     }
 
     private User createUser(MessageRequest request) {
@@ -60,7 +67,7 @@ public class DefaultAssistantService implements AssistantService {
 
     private Session findOrCreateSession(MessageRequest request, User user) {
         if (request.getSessionId() != null) {
-            return sessionRepository.findById(Long.parseLong(request.getSessionId()))
+            return sessionRepository.findById(request.getSessionId())
                     .orElseThrow(() -> new RuntimeException("Session not found"));
         }
 
@@ -81,16 +88,11 @@ public class DefaultAssistantService implements AssistantService {
     }
 
     private String generateAssistantResponse(Session session, String userMessage) {
-        // Ваша существующая логика генерации ответа
-        // Получаем историю сообщений из базы
         List<Message> history = messageRepository.findBySessionIdOrderByTimestampAsc(session.getId());
-
-        // Конвертируем в ChatMessage
         List<ChatMessage> chatHistory = history.stream()
                 .map(msg -> new ChatMessage(msg.getRole(), msg.getText()))
                 .collect(Collectors.toList());
 
-        // Используем ваш существующий метод
         return llm.generate(
                 session.getAssistantRole(),
                 chatHistory,

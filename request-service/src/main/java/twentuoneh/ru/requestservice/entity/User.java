@@ -1,4 +1,4 @@
-package entity;
+package twentuoneh.ru.requestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

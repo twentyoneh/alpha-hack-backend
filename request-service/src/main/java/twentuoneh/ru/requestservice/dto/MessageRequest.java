@@ -6,7 +6,7 @@ import twentuoneh.ru.requestservice.enums.Assistant;
 
 @Data
 public class MessageRequest {
-    String sessionId;
+    Long sessionId;
     String message;
     Assistant assistant;
 
