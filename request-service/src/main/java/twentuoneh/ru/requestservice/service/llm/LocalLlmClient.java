@@ -23,7 +23,7 @@ public class LocalLlmClient implements LlmClient {
     }
 
     @Override
-    public String generate(Assistant assistant, List<ChatMessage> history, String userMessage) {
+    public String generate(String assistant, List<ChatMessage> history, String userMessage) {
         Map<String, Object> body = Map.of(
                 "model", MODEL,
                 "messages", convertToMessages(assistant, history, userMessage),
@@ -41,7 +41,7 @@ public class LocalLlmClient implements LlmClient {
                 .block();
     }
 
-    private List<Map<String, String>> convertToMessages(Assistant assistant, List<ChatMessage> history, String userMessage) {
+    private List<Map<String, String>> convertToMessages(String assistant, List<ChatMessage> history, String userMessage) {
         List<Map<String, String>> messages = new ArrayList<>();
 
         // Конвертируем историю
@@ -53,7 +53,7 @@ public class LocalLlmClient implements LlmClient {
         }
 
         // Добавляем текущее сообщение
-        messages.add(Map.of("role", assistant.assistantName(), "content", userMessage));
+        messages.add(Map.of("role", assistant, "content", userMessage));
 
         return messages;
     }

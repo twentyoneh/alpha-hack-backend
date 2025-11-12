@@ -6,5 +6,5 @@ import twentuoneh.ru.requestservice.enums.Assistant;
 import java.util.List;
 
 public interface LlmClient {
-    String generate(Assistant assistant, List<ChatMessage> history, String userMessage);
+    String generate(String assistant, List<ChatMessage> history, String userMessage);
 }

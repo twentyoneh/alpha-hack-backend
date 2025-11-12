@@ -26,7 +26,7 @@ public class User {
     private String email;
 
     @Column(name = "\"createdAt\"", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(name = "\"updatedAt\"", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
