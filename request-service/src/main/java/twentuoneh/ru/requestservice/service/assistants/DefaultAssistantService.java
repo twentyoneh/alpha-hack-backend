@@ -3,6 +3,7 @@ package twentuoneh.ru.requestservice.service.assistants;
 import entity.Message;
 import entity.Session;
 import entity.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import twentuoneh.ru.requestservice.dto.ChatMessage;
 import twentuoneh.ru.requestservice.dto.MessageRequest;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service(value = "DEFAULT")
+@Qualifier("chatService")
 public class DefaultAssistantService implements AssistantService {
     private final LlmClient llm;
     private final UserRepository userRepository;
@@ -42,11 +44,9 @@ public class DefaultAssistantService implements AssistantService {
     private User findOrCreateUser(MessageRequest request) {
         if (request.getUserId() != null) {
             return userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseGet(() -> return createUser(request));
         }
 
-        return userRepository.findByEmail(request.getUserEmail())
-                .orElseGet(() -> createUser(request));
     }
 
     private User createUser(MessageRequest request) {
