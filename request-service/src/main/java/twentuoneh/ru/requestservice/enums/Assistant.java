@@ -8,7 +8,8 @@ public enum Assistant {
     HR,
     MANAGER,
     CONSULTANT,
-    DESIGNER;
+    DESIGNER,
+    DEFAULT;
 
     public String systemPrompt() {
         return switch (this) {
@@ -20,6 +21,7 @@ public enum Assistant {
             case MANAGER   -> "Ты менеджер. Структурируй задачи, сроки, риски.";
             case CONSULTANT-> "Ты консультант. Даёшь шаги, бенчмарки, trade-offs.";
             case DESIGNER  -> "Ты дизайнер. Говоришь о визуальной иерархии, сетках, контрасте.";
+            case DEFAULT -> "";
         };
     }
 

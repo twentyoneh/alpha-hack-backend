@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 import twentuoneh.ru.requestservice.dto.ChatMessage;
 import twentuoneh.ru.requestservice.enums.Assistant;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +27,9 @@ public class LocalLlmClient implements LlmClient {
     public String generate(Assistant assistant, List<ChatMessage> history, String userMessage) {
         Map<String, Object> body = Map.of(
                 "model", MODEL,
-                "messages", List.of(
-                        Map.of("role", "user", "content", prompt)
-                ),
+                "messages", convertToMessages(assistant, history, userMessage),
                 "stream", false,
                 "temperature", 0.7
-                // "max_tokens", 512
         );
 
         return webClient.post()
@@ -42,6 +40,23 @@ public class LocalLlmClient implements LlmClient {
                 .map(LocalLlmClient::extractContent)
                 .onErrorResume(e -> Mono.just("LLM error: " + e.getMessage()))
                 .block();
+    }
+
+    private List<Map<String, String>> convertToMessages(Assistant assistant, List<ChatMessage> history, String userMessage) {
+        List<Map<String, String>> messages = new ArrayList<>();
+
+        // Конвертируем историю
+        for (ChatMessage chatMessage : history) {
+            messages.add(Map.of(
+                    "role", chatMessage.role(),
+                    "content", chatMessage.content()
+            ));
+        }
+
+        // Добавляем текущее сообщение
+        messages.add(Map.of("role", assistant.assistantName(), "content", userMessage));
+
+        return messages;
     }
 
     @SuppressWarnings("unchecked")
