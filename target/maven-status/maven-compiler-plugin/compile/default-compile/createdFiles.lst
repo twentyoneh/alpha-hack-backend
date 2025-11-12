@@ -1,0 +1,10 @@
+com\example\chatapp\repository\MessageRepository.class
+com\example\chatapp\service\MessageService.class
+com\example\chatapp\service\SessionService.class
+com\example\chatapp\entity\Message.class
+com\example\chatapp\service\UserService.class
+com\example\chatapp\entity\User.class
+com\example\chatapp\repository\SessionRepository.class
+com\example\chatapp\entity\Session.class
+com\example\chatapp\repository\UserRepository.class
+com\example\chatapp\ChatApplication.class
