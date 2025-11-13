@@ -3,6 +3,7 @@ package twentuoneh.ru.requestservice.configuration;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -15,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class RequestConfig {
 
+    @Value("${ai.localai.base-url:http://localhost:8080}")
+    private String llmBaseUrl;
+
     @Bean
     public WebClient llmWebClient(WebClient.Builder builder) {
         HttpClient httpClient = HttpClient.create()
@@ -26,7 +30,7 @@ public class RequestConfig {
 
         return builder
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl("http://localhost:8080")
+                .baseUrl(llmBaseUrl)
                 .build();
     }
 }
