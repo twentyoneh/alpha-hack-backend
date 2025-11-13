@@ -1,5 +1,5 @@
 create table if not exists "User" (
-                                      id bigserial primary key,
+                                      id bigint primary key,
                                       name text not null,
                                       email text unique,
                                       "createdAt" timestamp not null,
@@ -7,7 +7,7 @@ create table if not exists "User" (
 );
 
 create table if not exists "Session" (
-                                         id bigserial primary key,
+                                         id bigint primary key,
                                          "userId" bigint not null references "User"(id),
     "assistantRole" text not null
     );

@@ -27,10 +27,9 @@ public class SessionService {
 
     @Transactional(readOnly = true)
     public Optional<Session> getSessionById(Long id) {
-        var session = sessionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Session with id %s wasn't found", id)));
-        log.info("Session found = {}", session);
-        return Optional.ofNullable(session);
+        var session = sessionRepository.findById(id);
+        log.info("Session found = {}", session.toString());
+        return session;
     }
 
 //    @Transactional(readOnly = true)

@@ -1,5 +1,6 @@
 package twentuoneh.ru.requestservice.service.assistants;
 
+import lombok.extern.slf4j.Slf4j;
 import twentuoneh.ru.requestservice.entity.Message;
 import twentuoneh.ru.requestservice.entity.Session;
 import twentuoneh.ru.requestservice.entity.User;
@@ -15,8 +16,10 @@ import twentuoneh.ru.requestservice.service.repos.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service(value = "DEFAULT")
 @Qualifier("chatService")
 public class DefaultAssistantService implements AssistantService {
@@ -40,24 +43,28 @@ public class DefaultAssistantService implements AssistantService {
 
         User user = findOrCreateUser(request);
         Session session = findOrCreateSession(request, user);
-        Message userMessage = saveMessage(session, assistant, text);
+        saveMessage(session, assistant, text);
 
         String assistantResponse = generateAssistantResponse(session, request.getMessage());
-        Message assistantMessage = saveMessage(session, assistant, assistantResponse);
+        saveMessage(session, "assistant", assistantResponse);
         return new MessageResponse(assistantResponse, session.getId());
     }
 
     private User findOrCreateUser(MessageRequest request) {
         if (request.getUserId() != null) {
-            return userService.getUserById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+            Optional<User> existingUser = userService.getUserById(request.getUserId());
+            if (existingUser.isPresent()) {
+                return existingUser.get();
+            }
+            log.info("User with id {} not found, creating new user", request.getUserId());
         }
-
         return createUser(request);
     }
 
     private User createUser(MessageRequest request) {
+        log.info("Creating user {}", request.getUserId());
         User user = User.builder().
+                id(request.getUserId()).
                 name(request.getUserName()).
                 email(request.getUserEmail()).
                 createdAt(LocalDateTime.now()).
@@ -67,14 +74,17 @@ public class DefaultAssistantService implements AssistantService {
 
     private Session findOrCreateSession(MessageRequest request, User user) {
         if (request.getSessionId() != null) {
-            return sessionService.getSessionById(request.getSessionId())
-                    .orElseThrow(() -> new RuntimeException("Session not found"));
+            Optional<Session> existingSession = sessionService.getSessionById(request.getSessionId());
+            if (existingSession.isPresent()) {
+                return existingSession.get();
+            }
         }
 
-        Session session = Session.builder().
-            user(user).
-            assistantRole(request.getAssistant().assistantName()).
-            build();
+        Session session = Session.builder()
+                .id(request.getSessionId())
+                .user(user)
+                .assistantRole(request.getAssistant().assistantName())
+                .build();
         return sessionService.createSession(session);
     }
 

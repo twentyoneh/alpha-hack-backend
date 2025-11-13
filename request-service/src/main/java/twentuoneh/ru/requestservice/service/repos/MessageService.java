@@ -49,7 +49,7 @@ public class MessageService {
     @Transactional
     public Message createMessage(Message message) {
         var savedMessage = messageRepository.save(message);
-        log.info("Message created = {}", savedMessage);
+        log.info("Message created = {}", savedMessage.getText());
         return savedMessage;
     }
 
