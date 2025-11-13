@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import twentuoneh.ru.requestservice.dto.ChatMessage;
 import twentuoneh.ru.requestservice.dto.MessageRequest;
 import twentuoneh.ru.requestservice.dto.MessageResponse;
-import twentuoneh.ru.requestservice.repository.MessageRepository;
-import twentuoneh.ru.requestservice.repository.SessionRepository;
-import twentuoneh.ru.requestservice.repository.UserRepository;
 import twentuoneh.ru.requestservice.service.llm.LlmClient;
+import twentuoneh.ru.requestservice.service.repos.MessageService;
+import twentuoneh.ru.requestservice.service.repos.SessionService;
+import twentuoneh.ru.requestservice.service.repos.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,15 +21,16 @@ import java.util.stream.Collectors;
 @Qualifier("chatService")
 public class DefaultAssistantService implements AssistantService {
     private final LlmClient llm;
-    private final UserRepository userRepository;
-    private final SessionRepository sessionRepository;
-    private final MessageRepository messageRepository;
+    private final MessageService messageService;
+    private final SessionService sessionService;
+    private final UserService userService;
+    
 
-    public DefaultAssistantService(LlmClient llm, UserRepository userRepository, SessionRepository sessionRepository, MessageRepository messageRepository) {
+    public DefaultAssistantService(LlmClient llm, UserService userService, SessionService sessionService, MessageService messageService) {
         this.llm = llm;
-        this.userRepository = userRepository;
-        this.sessionRepository = sessionRepository;
-        this.messageRepository = messageRepository;
+        this.userService = userService;
+        this.sessionService = sessionService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -46,10 +47,9 @@ public class DefaultAssistantService implements AssistantService {
         return new MessageResponse(assistantResponse, session.getId());
     }
 
-//TODO:переписать
     private User findOrCreateUser(MessageRequest request) {
         if (request.getUserId() != null) {
-            return userRepository.findById(request.getUserId())
+            return userService.getUserById(request.getUserId())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
@@ -62,12 +62,12 @@ public class DefaultAssistantService implements AssistantService {
                 email(request.getUserEmail()).
                 createdAt(LocalDateTime.now()).
                 build();
-        return userRepository.save(user);
+        return userService.createUser(user);
     }
 
     private Session findOrCreateSession(MessageRequest request, User user) {
         if (request.getSessionId() != null) {
-            return sessionRepository.findById(request.getSessionId())
+            return sessionService.getSessionById(request.getSessionId())
                     .orElseThrow(() -> new RuntimeException("Session not found"));
         }
 
@@ -75,7 +75,7 @@ public class DefaultAssistantService implements AssistantService {
             user(user).
             assistantRole(request.getAssistant().assistantName()).
             build();
-        return sessionRepository.save(session);
+        return sessionService.createSession(session);
     }
 
     private Message saveMessage(Session session, String role, String text) {
@@ -84,11 +84,11 @@ public class DefaultAssistantService implements AssistantService {
                 role(role).
                 text(text).
                 build();
-        return messageRepository.save(message);
+        return messageService.createMessage(message);
     }
 
     private String generateAssistantResponse(Session session, String userMessage) {
-        List<Message> history = messageRepository.findBySessionIdOrderByTimestampAsc(session.getId());
+        List<Message> history = messageService.findBySessionIdOrderByTimestampAsc(session.getId());
         List<ChatMessage> chatHistory = history.stream()
                 .map(msg -> new ChatMessage(msg.getRole(), msg.getText()))
                 .collect(Collectors.toList());
