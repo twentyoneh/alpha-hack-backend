@@ -19,7 +19,7 @@ spring:
         jdbc.time_zone: UTC
 
   flyway:
-    enabled: false #true, ????? ????? ????????
+    enabled: false #true, if write migration
 
 server:
   port: 8081

@@ -30,5 +30,6 @@ public class Message {
     private String text;
 
     @Column(nullable = false)
+    @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
 }

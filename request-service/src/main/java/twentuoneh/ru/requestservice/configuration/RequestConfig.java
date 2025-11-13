@@ -18,11 +18,11 @@ public class RequestConfig {
     @Bean
     public WebClient llmWebClient(WebClient.Builder builder) {
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-                .responseTimeout(Duration.ofMillis(5000))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                .responseTimeout(Duration.ofMillis(10000))
                 .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS)));
+                        conn.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(10000, TimeUnit.MILLISECONDS)));
 
         return builder
                 .clientConnector(new ReactorClientHttpConnector(httpClient))

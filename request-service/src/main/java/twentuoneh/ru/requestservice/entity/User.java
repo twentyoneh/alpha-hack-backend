@@ -29,5 +29,6 @@ public class User {
     private LocalDateTime createdAt;
 
     @Column(name = "\"updatedAt\"", nullable = false)
+    @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 }
