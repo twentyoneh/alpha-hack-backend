@@ -45,7 +45,7 @@ public class DefaultAssistantService implements AssistantService {
         Session session = findOrCreateSession(request, user);
         saveMessage(session, assistant, text);
 
-        String assistantResponse = generateAssistantResponse(session, request.getMessage());
+        String assistantResponse = generateAssistantResponse(session, request);
         saveMessage(session, "assistant", assistantResponse);
         return new MessageResponse(assistantResponse, session.getId());
     }
@@ -97,7 +97,7 @@ public class DefaultAssistantService implements AssistantService {
         return messageService.createMessage(message);
     }
 
-    private String generateAssistantResponse(Session session, String userMessage) {
+    private String generateAssistantResponse(Session session, MessageRequest userMessage) {
         List<Message> history = messageService.findBySessionIdOrderByTimestampAsc(session.getId());
         List<ChatMessage> chatHistory = history.stream()
                 .map(msg -> new ChatMessage(msg.getRole(), msg.getText()))

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import twentuoneh.ru.requestservice.dto.ChatMessage;
+import twentuoneh.ru.requestservice.dto.MessageRequest;
 import twentuoneh.ru.requestservice.enums.Assistant;
 
 import java.util.ArrayList;
@@ -23,10 +24,11 @@ public class LocalLlmClient implements LlmClient {
     }
 
     @Override
-    public String generate(String assistant, List<ChatMessage> history, String userMessage) {
+    public String generate(String assistant, List<ChatMessage> history, MessageRequest userMessage) {
         Map<String, Object> body = Map.of(
                 "model", MODEL,
-                "messages", convertToMessages(assistant, history, userMessage),
+                "messages", convertToMessages(assistant, history, userMessage.getMessage()),
+                "instruction", userMessage.getAssistant().systemPrompt(),
                 "stream", false,
                 "temperature", 0.7
         );
