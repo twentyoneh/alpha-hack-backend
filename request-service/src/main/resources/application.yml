@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #jpa.hibernate.ddl-auto: validate
+      ddl-auto: validate #jpa.hibernate.ddl-auto: validate
     open-in-view: false
     properties:
       hibernate:
@@ -19,7 +19,7 @@ spring:
         jdbc.time_zone: UTC
 
   flyway:
-    enabled: false #true, if write migration
+    enabled: true #true, if write migration
 
 server:
   port: 8081

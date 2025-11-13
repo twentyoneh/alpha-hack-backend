@@ -50,7 +50,7 @@ public class SessionService {
     @Transactional
     public Session createSession(Session session) {
         var savedSession = sessionRepository.save(session);
-        log.info("Session created = {}", savedSession);
+        log.info("Session with id created = {}", savedSession.getId());
         return savedSession;
     }
 
