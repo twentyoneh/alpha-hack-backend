@@ -24,7 +24,7 @@ public class Message {
     @Column(nullable = false)
     private String role;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String text;
 
     @Column(nullable = false)

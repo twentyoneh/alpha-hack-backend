@@ -4,15 +4,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import twentuoneh.ru.requestservice.enums.Assistant;
 
+import java.util.UUID;
+
 @Data
 @Schema(description = "Запрос на отправку сообщения AI-ассистенту")
 public class MessageRequest {
     
     @Schema(
             description = "ID существующей сессии (опционально). Если не указан, создается новая сессия",
-            example = "12345"
+            example = "550e8400-e29b-41d4-a716-446655440000"
     )
-    Long sessionId;
+    UUID sessionId;
     
     @Schema(
             description = "Текст сообщения для ассистента",
@@ -31,11 +33,11 @@ public class MessageRequest {
 
     @Schema(
             description = "ID пользователя (опционально). Если не указан, создается новый пользователь",
-            example = "1"
+            example = "123e4567-e89b-12d3-a456-426614174000"
     )
-    Long userId;
+    UUID userId;
     
-    @Schema(Collapse commentComment on line R38twentyoneh commented on Nov 14, 2025 twentyonehon Nov 14, 2025OwnerMore actionsесли мы это поле не используем не значит что оно вообще не нужно, если сделаем авторизацию - надо будет везде его добавлять+ проект не билдится без этого поляReactWrite a replyCode has comments. Press enter to view.
+    @Schema(
             description = "Email пользователя",
             example = "user@example.com"
     )

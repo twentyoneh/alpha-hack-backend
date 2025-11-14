@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,7 +23,7 @@ public class MessageResponse {
     
     @Schema(
             description = "ID сессии для продолжения диалога",
-            example = "12345"
+            example = "550e8400-e29b-41d4-a716-446655440000"
     )
-    Long sessionId;
+    UUID sessionId;
 }

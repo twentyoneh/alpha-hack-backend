@@ -45,7 +45,7 @@ public class RequestController {
                                     value = """
                                             {
                                               "response": "Здравствуйте! Я бухгалтер-ассистент. Чем могу помочь?",
-                                              "sessionId": 12345
+                                              "sessionId": "550e8400-e29b-41d4-a716-446655440000"
                                             }
                                             """
                             )
@@ -75,7 +75,7 @@ public class RequestController {
                                                     {
                                                       "message": "Как правильно оформить счет-фактуру?",
                                                       "assistant": "ACCOUNTANT",
-                                                      "userId": 1,
+                                                      "userId": "123e4567-e89b-12d3-a456-426614174000",
                                                       "userName": "Иван Иванов"
                                                     }
                                                     """
@@ -84,10 +84,10 @@ public class RequestController {
                                             name = "Продолжение существующей сессии",
                                             value = """
                                                     {
-                                                      "sessionId": 12345,
+                                                      "sessionId": "550e8400-e29b-41d4-a716-446655440000",
                                                       "message": "А какие документы нужны для этого?",
                                                       "assistant": "ACCOUNTANT",
-                                                      "userId": 1,
+                                                      "userId": "123e4567-e89b-12d3-a456-426614174000",
                                                       "userName": "Иван Иванов"
                                                     }
                                                     """
@@ -98,7 +98,7 @@ public class RequestController {
                                                     {
                                                       "message": "Какие права у работника при увольнении?",
                                                       "assistant": "LAWYER",
-                                                      "userId": 2,
+                                                      "userId": "987fcdeb-51a2-43d7-b456-789012345678",
                                                       "userName": "Петр Петров"
                                                     }
                                                     """
