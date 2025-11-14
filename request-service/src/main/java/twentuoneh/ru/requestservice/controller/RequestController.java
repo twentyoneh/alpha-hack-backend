@@ -73,6 +73,7 @@ public class RequestController {
                                             name = "Новая сессия с бухгалтером",
                                             value = """
                                                     {
+                                                      "sessionId": 12345,
                                                       "message": "Как правильно оформить счет-фактуру?",
                                                       "assistant": "ACCOUNTANT",
                                                       "userId": 1,
@@ -96,6 +97,7 @@ public class RequestController {
                                             name = "Запрос к юристу",
                                             value = """
                                                     {
+                                                      "sessionId": 12345,
                                                       "message": "Какие права у работника при увольнении?",
                                                       "assistant": "LAWYER",
                                                       "userId": 2,
