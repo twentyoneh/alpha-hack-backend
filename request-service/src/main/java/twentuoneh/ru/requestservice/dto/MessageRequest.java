@@ -35,7 +35,11 @@ public class MessageRequest {
     )
     Long userId;
     
-
+    @Schema(Collapse commentComment on line R38twentyoneh commented on Nov 14, 2025 twentyonehon Nov 14, 2025OwnerMore actionsесли мы это поле не используем не значит что оно вообще не нужно, если сделаем авторизацию - надо будет везде его добавлять+ проект не билдится без этого поляReactWrite a replyCode has comments. Press enter to view.
+            description = "Email пользователя",
+            example = "user@example.com"
+    )
+    String userEmail;
     
     @Schema(
             description = "Имя пользователя",
