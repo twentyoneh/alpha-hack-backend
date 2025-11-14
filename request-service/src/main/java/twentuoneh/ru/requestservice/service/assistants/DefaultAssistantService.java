@@ -20,8 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service(value = "DEFAULT")
-@Qualifier("chatService")
+@Service
 public class DefaultAssistantService implements AssistantService {
     private final LlmClient llm;
     private final MessageService messageService;

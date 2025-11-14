@@ -1,27 +1,27 @@
 package twentuoneh.ru.requestservice.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import twentuoneh.ru.requestservice.dto.MessageRequest;
 import twentuoneh.ru.requestservice.dto.MessageResponse;
+import twentuoneh.ru.requestservice.enums.Assistant;
 import twentuoneh.ru.requestservice.service.assistants.AssistantService;
+import twentuoneh.ru.requestservice.service.assistants.AssistantServiceFactory;
+import twentuoneh.ru.requestservice.service.assistants.DefaultAssistantService;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 public class RequestService {
+    private final AssistantServiceFactory assistantServiceFactory;
 
-    private final Map<String, AssistantService> assistants;
-
-    public RequestService(Map<String, AssistantService> assistants) {
-        this.assistants = assistants;
+    public RequestService(AssistantServiceFactory assistantServiceFactory) {
+        this.assistantServiceFactory = assistantServiceFactory;
     }
 
-
     public MessageResponse sendMessage(MessageRequest message) {
-        AssistantService svc = assistants.get(message.getAssistant().name());
-        if (svc == null) {
-            throw new IllegalArgumentException("Unsupported assistant type: " + message.getAssistant());
-        }
-        return svc.handle(message);
+        AssistantService assistant = assistantServiceFactory.getService(message.getAssistant());
+        return assistant.handle(message);
     }
 }
