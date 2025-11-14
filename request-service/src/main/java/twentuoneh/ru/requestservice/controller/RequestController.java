@@ -76,7 +76,6 @@ public class RequestController {
                                                       "message": "Как правильно оформить счет-фактуру?",
                                                       "assistant": "ACCOUNTANT",
                                                       "userId": 1,
-                                                      "userEmail": "user@example.com",
                                                       "userName": "Иван Иванов"
                                                     }
                                                     """
@@ -89,7 +88,6 @@ public class RequestController {
                                                       "message": "А какие документы нужны для этого?",
                                                       "assistant": "ACCOUNTANT",
                                                       "userId": 1,
-                                                      "userEmail": "user@example.com",
                                                       "userName": "Иван Иванов"
                                                     }
                                                     """
@@ -101,7 +99,6 @@ public class RequestController {
                                                       "message": "Какие права у работника при увольнении?",
                                                       "assistant": "LAWYER",
                                                       "userId": 2,
-                                                      "userEmail": "lawyer@example.com",
                                                       "userName": "Петр Петров"
                                                     }
                                                     """

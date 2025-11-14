@@ -35,11 +35,7 @@ public class MessageRequest {
     )
     Long userId;
     
-    @Schema(
-            description = "Email пользователя",
-            example = "user@example.com"
-    )
-    String userEmail;
+
     
     @Schema(
             description = "Имя пользователя",
