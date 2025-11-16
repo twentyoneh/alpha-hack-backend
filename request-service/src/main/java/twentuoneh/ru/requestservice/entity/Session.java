@@ -15,6 +15,7 @@ import java.util.List;
 @ToString(onlyExplicitlyIncluded = true)
 public class Session {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

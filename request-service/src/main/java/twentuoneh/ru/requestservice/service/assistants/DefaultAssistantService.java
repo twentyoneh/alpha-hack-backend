@@ -80,7 +80,6 @@ public class DefaultAssistantService implements AssistantService {
         }
 
         Session session = Session.builder()
-                .id(request.getSessionId())
                 .user(user)
                 .assistantRole(request.getAssistant().assistantName())
                 .build();

@@ -7,7 +7,7 @@ create table if not exists "User" (
 );
 
 create table if not exists "Session" (
-                                         id bigint primary key,
+                                         id bigserial primary key,
                                          "userId" bigint not null references "User"(id),
     "assistantRole" text not null
     );
